@@ -35,6 +35,7 @@ const bodies = [
       [1, 5],
       [3, 7],
     ],
+    //Translation relative to the position of the world origin
     translation: { x: 0, y: 0, z: 1 },
   }
 ];
