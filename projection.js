@@ -6,8 +6,19 @@ function translate(bodyOrigin, translation, scale = 1) {
   }
 }
 
+//Those rotation functions assume, that each point is a relative offset to the center of the body.
+function rotateAroundX({ x, y, z }, angle) {
+  const cosine = Math.cos(angle);
+  const sinus = Math.sin(angle);
+
+  return {
+    x,
+    y: y * cosine - z * sinus,
+    z: y * sinus + z * cosine
+  }
+}
+
 function rotateAroundY({ x, y, z }, angle) {
-  //This rotation function assumes, that each point is a relative offset to the center of the body.
   const cosine = Math.cos(angle);
   const sinus = Math.sin(angle);
 
@@ -15,6 +26,19 @@ function rotateAroundY({ x, y, z }, angle) {
     x: x * cosine - z * sinus,
     y,
     z: x * sinus + z * cosine
+  }
+}
+
+function rotateAroundZ({ x, y, z }, angle) {
+  const cosine = Math.cos(angle);
+  const sinus = Math.sin(angle);
+
+
+
+  return {
+    x: x * cosine - y * sinus,
+    y: x * sinus + y * cosine,
+    z
   }
 }
 
