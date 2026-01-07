@@ -1,8 +1,8 @@
-function translate(bodyOrigin, translation) {
+function translate(bodyOrigin, translation, scale = 1) {
   return {
-    x: bodyOrigin.x + translation.x,
-    y: bodyOrigin.y + translation.y,
-    z: bodyOrigin.z + translation.z,
+    x: bodyOrigin.x + scale * translation.x,
+    y: bodyOrigin.y + scale * translation.y,
+    z: bodyOrigin.z + scale * translation.z,
   }
 }
 
@@ -33,4 +33,8 @@ function projectToScreen({ x, y }) {
     //y: -1..1 => 0..2 => 0..1 =>  0..SCREEN_HEIGHT => SCREEN_HEIGHT..0
     y: (1 - (y + 1) / 2) * SCREEN_HEIGHT
   }
+}
+
+function projectAndTranslate(point, translation) {
+  return projectToScreen(projectTo2d(translate(point, translation)));
 }
