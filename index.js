@@ -58,11 +58,13 @@ window.addEventListener("load", () => {
   function render() {
     //Handle Input
     const cameraMovementOffset = CAMERA_SPEED * DELTA_TIME;
+
+    //Camera Position
     if (INPUTS.ArrowUp) {
-      CAMERA_POSITION.z += cameraMovementOffset;
+      CAMERA_POSITION.y += cameraMovementOffset;
     }
     if (INPUTS.ArrowDown) {
-      CAMERA_POSITION.z -= cameraMovementOffset;
+      CAMERA_POSITION.y -= cameraMovementOffset;
     }
     if (INPUTS.ArrowRight) {
       CAMERA_POSITION.x += cameraMovementOffset;
@@ -71,10 +73,10 @@ window.addEventListener("load", () => {
       CAMERA_POSITION.x -= cameraMovementOffset;
     }
     if (INPUTS.w) {
-      CAMERA_POSITION.y += cameraMovementOffset;
+      CAMERA_POSITION.z += cameraMovementOffset;
     }
     if (INPUTS.s) {
-      CAMERA_POSITION.y -= cameraMovementOffset;
+      CAMERA_POSITION.z -= cameraMovementOffset;
     }
 
     //Render bodies
