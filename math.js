@@ -1,12 +1,13 @@
-function translate(bodyOrigin, translation, scale = 1) {
+//Move point
+function translate(point, translation, scale = 1) {
   return {
-    x: bodyOrigin.x + scale * translation.x,
-    y: bodyOrigin.y + scale * translation.y,
-    z: bodyOrigin.z + scale * translation.z,
+    x: point.x + scale * translation.x,
+    y: point.y + scale * translation.y,
+    z: point.z + scale * translation.z,
   }
 }
 
-//Those functions are using a matrix rotations around the world center at (0, 0, 0)
+//Rotate point around the world center at (0, 0, 0)
 function rotateAroundX({ x, y, z }, angle) {
   const cosine = Math.cos(angle);
   const sinus = Math.sin(angle);
@@ -38,4 +39,26 @@ function rotateAroundZ({ x, y, z }, angle) {
     y: x * sinus + y * cosine,
     z
   }
+}
+
+//Project point
+function projectTo2d({ x, y, z }) {
+  //Pinhole point projection
+  return {
+    x: x / z,
+    y: y / z,
+  }
+}
+
+function projectToScreen({ x, y }) {
+  return {
+    //x: -1..1 => 0..2 => 0..1 => 0..SCREEN_WIDTH
+    x: (x + 1) / 2 * SCREEN_WIDTH,
+    //y: -1..1 => 0..2 => 0..1 =>  0..SCREEN_HEIGHT => SCREEN_HEIGHT..0
+    y: SCREEN_HEIGHT - (((y + 1) / 2) * SCREEN_HEIGHT),
+  }
+}
+
+function project(point3d) {
+  return projectToScreen(projectTo2d(point3d));
 }
