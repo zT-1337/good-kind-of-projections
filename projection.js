@@ -15,7 +15,6 @@ function projectToScreen({ x, y }) {
   }
 }
 
-//TODO: Rename function to make it clear what it does
-function projectAndTranslate(point, translation) {
-  return projectToScreen(projectTo2d(translate(point, translation)));
+function project(point3d) {
+  return projectToScreen(projectTo2d(point3d));
 }

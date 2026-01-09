@@ -1,4 +1,12 @@
-//Those functions are using a matrix rotation 
+function translate(bodyOrigin, translation, scale = 1) {
+  return {
+    x: bodyOrigin.x + scale * translation.x,
+    y: bodyOrigin.y + scale * translation.y,
+    z: bodyOrigin.z + scale * translation.z,
+  }
+}
+
+//Those functions are using a matrix rotations around the world center at (0, 0, 0)
 function rotateAroundX({ x, y, z }, angle) {
   const cosine = Math.cos(angle);
   const sinus = Math.sin(angle);
@@ -29,13 +37,5 @@ function rotateAroundZ({ x, y, z }, angle) {
     x: x * cosine - y * sinus,
     y: x * sinus + y * cosine,
     z
-  }
-}
-
-function translate(bodyOrigin, translation, scale = 1) {
-  return {
-    x: bodyOrigin.x + scale * translation.x,
-    y: bodyOrigin.y + scale * translation.y,
-    z: bodyOrigin.z + scale * translation.z,
   }
 }

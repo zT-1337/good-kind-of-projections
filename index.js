@@ -7,14 +7,19 @@ const DELTA_TIME = 1 / FPS;
 
 const CAMERA_SPEED = 1;
 const CAMERA_POSITION = { x: 0, y: 0, z: 0 };
+const CAMERA_ANGLE = { x: 0, y: 0 };
 
 const INPUTS = {
-  "ArrowUp": false,
-  "ArrowDown": false,
-  "ArrowLeft": false,
-  "ArrowRight": false,
-  "w": false,
-  "s": false,
+  ArrowUp: false,
+  ArrowDown: false,
+  ArrowLeft: false,
+  ArrowRight: false,
+  w: false,
+  s: false,
+  a: false,
+  d: false,
+  e: false,
+  q: false,
 }
 
 //Setup input handling
@@ -78,16 +83,44 @@ window.addEventListener("load", () => {
     if (INPUTS.s) {
       CAMERA_POSITION.z -= cameraMovementOffset;
     }
+    //Camera Angle
+    if (INPUTS.d) {
+      CAMERA_ANGLE.y += cameraMovementOffset;
+    }
+    if (INPUTS.a) {
+      CAMERA_ANGLE.y -= cameraMovementOffset;
+    }
+    if (INPUTS.q) {
+      CAMERA_ANGLE.x += cameraMovementOffset;
+    }
+    if (INPUTS.e) {
+      CAMERA_ANGLE.x -= cameraMovementOffset;
+    }
 
     //Render bodies
     clearScreen();
 
     angle += Math.PI * DELTA_TIME;
-    for (const shape of bodies) {
-      for (const vertice of shape.vertices) {
-        const cameraToShapeTranslation = translate(shape.translation, CAMERA_POSITION, -1);
-        const start = projectAndTranslate(rotateAroundY(shape.points[vertice[0]], angle), cameraToShapeTranslation);
-        const end = projectAndTranslate(rotateAroundY(shape.points[vertice[1]], angle), cameraToShapeTranslation);
+    for (const body of bodies) {
+      const bodyCenterAdjustedToCamera = rotateAroundX(
+        rotateAroundY(
+          translate(body.translation, CAMERA_POSITION, -1),
+          CAMERA_ANGLE.y
+        ),
+        CAMERA_ANGLE.x,
+      );
+
+      for (const vertice of body.vertices) {
+        const start3d = translate(rotateAroundY(body.points[vertice[0]], angle), bodyCenterAdjustedToCamera);
+        const end3d = translate(rotateAroundY(body.points[vertice[1]], angle), bodyCenterAdjustedToCamera);
+
+        //TODO: Fix clipping
+        if (start3d.z <= 0 || end3d.z <= 0) {
+          continue;
+        }
+
+        const start = project(start3d);
+        const end = project(end3d);
         renderLine(start, end);
       }
     }
