@@ -39,6 +39,30 @@ const bodies = [
     translation: { x: 0, y: 0, z: 1 },
     animate: true,
   },
+  //Pyramid
+  {
+    points: [
+      { x: 0, y: 0.25, z: 0 },
+      { x: -0.25, y: -0.25, z: -0.25 },
+      { x: -0.25, y: -0.25, z: 0.25 },
+      { x: 0.25, y: -0.25, z: -0.25 },
+      { x: 0.25, y: -0.25, z: 0.25 },
+    ],
+    vertices: [
+      //Floor,
+      [1, 2],
+      [1, 3],
+      [4, 3],
+      [4, 2],
+      //Sides
+      [0, 1],
+      [0, 2],
+      [0, 3],
+      [0, 4],
+    ],
+    translation: { x: 1, y: 0, z: 0 },
+    animate: true,
+  },
   //Z+ 
   {
     points: [
