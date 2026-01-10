@@ -111,8 +111,14 @@ window.addEventListener("load", () => {
       );
 
       for (const vertice of body.vertices) {
-        const start3d = translate(rotateAroundY(body.points[vertice[0]], angle), bodyCenterAdjustedToCamera);
-        const end3d = translate(rotateAroundY(body.points[vertice[1]], angle), bodyCenterAdjustedToCamera);
+        const start3d = translate(
+          body.animate ? rotateAroundY(body.points[vertice[0]], angle) : body.points[vertice[0]],
+          bodyCenterAdjustedToCamera
+        );
+        const end3d = translate(
+          body.animate ? rotateAroundY(body.points[vertice[1]], angle) : body.points[vertice[1]],
+          bodyCenterAdjustedToCamera
+        );
 
         //TODO: Fix clipping
         if (start3d.z <= 0 || end3d.z <= 0) {
