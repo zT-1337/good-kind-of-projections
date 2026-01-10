@@ -1,3 +1,5 @@
+//TODO: Fix random clipping (Cylinder) by adding a proper FOV or limit or whatever. Get creative.
+
 const SCREEN_WIDTH = 800;
 const SCREEN_HEIGHT = 600;
 const BACKGROUND = "black";
@@ -120,7 +122,6 @@ window.addEventListener("load", () => {
           bodyCenterAdjustedToCamera
         );
 
-        //TODO: Fix clipping
         if (start3d.z <= 0 || end3d.z <= 0) {
           continue;
         }
