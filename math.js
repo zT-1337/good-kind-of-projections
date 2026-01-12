@@ -1,3 +1,22 @@
+//Analysis Utils
+const NEAR_Z_AXIS = 0.001;
+function findIntersectionWithZAxis(front3d, back3d) {
+  const deltaZ = front3d.z - back3d.z;
+
+  //Because it would be either zero or infinite results
+  if (deltaZ === 0) {
+    return undefined;
+  }
+
+  const gradient = (NEAR_Z_AXIS - back3d.z) / deltaZ;
+
+  return {
+    x: back3d.x + gradient * (front3d.x - back3d.x),
+    y: back3d.y + gradient * (front3d.y - back3d.y),
+    z: NEAR_Z_AXIS,
+  }
+}
+
 //Move point
 function translate(point, translation, scale = 1) {
   return {

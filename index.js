@@ -1,5 +1,3 @@
-//TODO: Fix random clipping (Cylinder) by adding a proper FOV or limit or whatever. Get creative.
-
 const SCREEN_WIDTH = 800;
 const SCREEN_HEIGHT = 600;
 const BACKGROUND = "black";
@@ -10,6 +8,9 @@ const DELTA_TIME = 1 / FPS;
 const CAMERA_SPEED = 1;
 const CAMERA_POSITION = { x: 0, y: 0, z: 0 };
 const CAMERA_ANGLE = { x: 0, y: 0 };
+
+const CANVAS_UPPER_LIMIT = 1e6;
+const CANVAS_LOWER_LIMIT = -1e6;
 
 const INPUTS = {
   ArrowUp: false,
@@ -49,7 +50,15 @@ window.addEventListener("load", () => {
   let timeoutId = undefined;
   let angle = 0;
 
+  function isOutsideOfCanvasLimit({ x, y }) {
+    return x > CANVAS_UPPER_LIMIT || x < CANVAS_LOWER_LIMIT || y > CANVAS_UPPER_LIMIT || y < CANVAS_LOWER_LIMIT;
+  }
+
   function renderLine(start, end) {
+    if (isOutsideOfCanvasLimit(start) || isOutsideOfCanvasLimit(end)) {
+      return;
+    }
+
     ctx.strokeStyle = FOREGROUND;
     ctx.beginPath();
     ctx.moveTo(start.x, start.y);
@@ -102,7 +111,8 @@ window.addEventListener("load", () => {
     //Render bodies
     clearScreen();
 
-    angle += Math.PI * DELTA_TIME;
+    angle += Math.PI / 2 * DELTA_TIME;
+
     for (const body of bodies) {
       const bodyCenterAdjustedToCamera = rotateAroundX(
         rotateAroundY(
@@ -113,21 +123,26 @@ window.addEventListener("load", () => {
       );
 
       for (const vertice of body.vertices) {
-        const start3d = translate(
+        let start3d = translate(
           body.animate ? rotateAroundY(body.points[vertice[0]], angle) : body.points[vertice[0]],
           bodyCenterAdjustedToCamera
         );
-        const end3d = translate(
+        let end3d = translate(
           body.animate ? rotateAroundY(body.points[vertice[1]], angle) : body.points[vertice[1]],
           bodyCenterAdjustedToCamera
         );
 
-        if (start3d.z <= 0 || end3d.z <= 0) {
+        if (start3d.z <= 0 && end3d.z <= 0) {
           continue;
+        } else if (start3d.z <= 0 && end3d.z > 0) {
+          start3d = findIntersectionWithZAxis(end3d, start3d);
+        } else if (end3d.z <= 0 && start3d.z > 0) {
+          end3d = findIntersectionWithZAxis(start3d, end3d);
         }
 
         const start = project(start3d);
         const end = project(end3d);
+
         renderLine(start, end);
       }
     }
