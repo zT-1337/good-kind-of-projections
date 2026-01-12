@@ -7,7 +7,7 @@ const DELTA_TIME = 1 / FPS;
 
 const CAMERA_SPEED = 1;
 const CAMERA_POSITION = { x: 0, y: 0, z: 0 };
-const CAMERA_ANGLE = { x: 0, y: 0 };
+const CAMERA_ANGLE = { x: 0, y: 0, z: 0 };
 
 const CANVAS_UPPER_LIMIT = 1e6;
 const CANVAS_LOWER_LIMIT = -1e6;
@@ -23,6 +23,8 @@ const INPUTS = {
   d: false,
   e: false,
   q: false,
+  y: false,
+  c: false,
 }
 
 //Setup input handling
@@ -101,11 +103,17 @@ window.addEventListener("load", () => {
     if (INPUTS.a) {
       CAMERA_ANGLE.y -= cameraMovementOffset;
     }
-    if (INPUTS.q) {
+    if (INPUTS.e) {
       CAMERA_ANGLE.x += cameraMovementOffset;
     }
-    if (INPUTS.e) {
+    if (INPUTS.q) {
       CAMERA_ANGLE.x -= cameraMovementOffset;
+    }
+    if (INPUTS.c) {
+      CAMERA_ANGLE.z += cameraMovementOffset;
+    }
+    if (INPUTS.y) {
+      CAMERA_ANGLE.z -= cameraMovementOffset;
     }
 
     //Render bodies
@@ -114,32 +122,42 @@ window.addEventListener("load", () => {
     angle += Math.PI / 2 * DELTA_TIME;
 
     for (const body of bodies) {
-      const bodyCenterAdjustedToCamera = rotateAroundX(
-        rotateAroundY(
-          translate(body.translation, CAMERA_POSITION, -1),
-          CAMERA_ANGLE.y
+      const bodyCenterAdjustedToCamera = rotateAroundZ(
+        rotateAroundX(
+          rotateAroundY(
+            translate(body.translation, CAMERA_POSITION, -1),
+            CAMERA_ANGLE.y
+          ),
+          CAMERA_ANGLE.x,
         ),
-        CAMERA_ANGLE.x,
+        CAMERA_ANGLE.z
       );
 
       for (const vertice of body.vertices) {
         let start3d = translate(
-          rotateAroundX(
-            rotateAroundY(
-              body.points[vertice[0]],
-              body.animate ? CAMERA_ANGLE.y + angle : CAMERA_ANGLE.y,
+          rotateAroundZ(
+            rotateAroundX(
+              rotateAroundY(
+                body.points[vertice[0]],
+                body.animate ? CAMERA_ANGLE.y + angle : CAMERA_ANGLE.y,
+              ),
+              CAMERA_ANGLE.x
             ),
-            CAMERA_ANGLE.x
+            CAMERA_ANGLE.z
           ),
           bodyCenterAdjustedToCamera
         );
+
         let end3d = translate(
-          rotateAroundX(
-            rotateAroundY(
-              body.points[vertice[1]],
-              body.animate ? CAMERA_ANGLE.y + angle : CAMERA_ANGLE.y,
+          rotateAroundZ(
+            rotateAroundX(
+              rotateAroundY(
+                body.points[vertice[1]],
+                body.animate ? CAMERA_ANGLE.y + angle : CAMERA_ANGLE.y,
+              ),
+              CAMERA_ANGLE.x
             ),
-            CAMERA_ANGLE.x
+            CAMERA_ANGLE.z
           ),
           bodyCenterAdjustedToCamera
         );
