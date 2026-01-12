@@ -8,6 +8,3 @@ Additionally I added the functionality of:
 - Camera rotation around the x and y axis
 - Input legend
 - More shapes within the world
-
-Features to add:
-- Proper FOV calculation to prevent clipping bodies, that should not be rendered
