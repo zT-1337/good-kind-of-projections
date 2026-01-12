@@ -194,7 +194,7 @@ const bodies = [
       [6, 14],
       [7, 15],
     ],
-    translation: { x: -1.5, y: 0, z: 0 },
+    translation: { x: -1, y: 0, z: 0 },
     animate: true,
   },
   //Z+ 
@@ -319,5 +319,4 @@ const bodies = [
     translation: { x: 0, y: -5, z: 0 },
     animate: false,
   },
-
 ];
