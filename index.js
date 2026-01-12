@@ -124,11 +124,23 @@ window.addEventListener("load", () => {
 
       for (const vertice of body.vertices) {
         let start3d = translate(
-          body.animate ? rotateAroundY(body.points[vertice[0]], angle) : body.points[vertice[0]],
+          rotateAroundX(
+            rotateAroundY(
+              body.points[vertice[0]],
+              body.animate ? CAMERA_ANGLE.y + angle : CAMERA_ANGLE.y,
+            ),
+            CAMERA_ANGLE.x
+          ),
           bodyCenterAdjustedToCamera
         );
         let end3d = translate(
-          body.animate ? rotateAroundY(body.points[vertice[1]], angle) : body.points[vertice[1]],
+          rotateAroundX(
+            rotateAroundY(
+              body.points[vertice[1]],
+              body.animate ? CAMERA_ANGLE.y + angle : CAMERA_ANGLE.y,
+            ),
+            CAMERA_ANGLE.x
+          ),
           bodyCenterAdjustedToCamera
         );
 
